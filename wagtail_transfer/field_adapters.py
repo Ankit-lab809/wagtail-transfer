@@ -75,7 +75,11 @@ class FieldAdapter:
         do not need to be considered, as they do not block the creation/update of the parent
         object.
         """
-        return set()
+      logger.info(f"[wagtail-transfer] get_dependencies called with value: {value} (type: {type(value)})")
+      if not value:
+          logger.info("[wagtail-transfer] value is None or empty — returning empty dependencies")
+          return set()
+      return {(self.related_base_model, id, False) for id in value}
 
     def get_object_deletions(self, instance, value, context):
         """
