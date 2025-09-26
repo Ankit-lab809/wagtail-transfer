@@ -358,7 +358,9 @@ class ManyToManyFieldAdapter(FieldAdapter):
         return refs
 
     def get_dependencies(self, value):
-        return {(self.related_base_model, id, False) for id in value}
+      if not value:
+          return set()
+    return {(self.related_base_model, id, False) for id in value}
 
     def serialize(self, instance):
         pks = list(self._get_pks(instance))
